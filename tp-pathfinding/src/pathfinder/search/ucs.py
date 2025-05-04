@@ -4,6 +4,39 @@ from ..models.solution import NoSolution, Solution
 from ..models.node import Node
 
 
+# Algoritmo UCS adaptado al proyecto actual
+"""
+def graph_ucs(grid: Grid) -> Solution | NoSolution:
+    node = Node(state=grid.start, parent=None, action=None, cost=0)
+    frontier = PriorityQueueFrontier()
+    frontier.add(node, node.cost)
+    reached = {node.state: node.cost}
+
+    while True:
+        if frontier.is_empty():
+            return NoSolution(reached)
+
+        current_node = frontier.remove()
+
+        if current_node.state == grid.end:
+            return Solution(current_node, reached)
+
+        successors = grid.get_neighbours(current_node.state)
+
+        for action, new_state in successors.items():
+            new_cost = current_node.cost + grid.get_cost(new_state)
+
+            if new_state not in reached or new_cost < reached[new_state]:
+                child_node = Node(
+                    state=new_state,
+                    parent=current_node,
+                    action=action,
+                    cost=new_cost
+                )
+                reached[new_state] = new_cost
+                frontier.add(child_node, new_cost)
+"""
+
 class UniformCostSearch:
     @staticmethod
     def search(grid: Grid) -> Solution:
