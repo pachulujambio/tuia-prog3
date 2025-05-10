@@ -27,7 +27,7 @@ function graph-dfs(grid) return solucion o fallo
 
 class DepthFirstSearch:
     @staticmethod
-    def search(grid: Grid) -> Solution:
+    def search(grid: Grid) -> Solution | NoSolution:
         """Find path between two points in a grid using Depth First Search
 
         Args:
@@ -36,13 +36,41 @@ class DepthFirstSearch:
         Returns:
             Solution: Solution found
         """
-        # Initialize a node with the initial position
         node = Node("", grid.start, 0)
 
-        # Initialize the explored dictionary to be empty
-        explored = {} 
+        # Verificamos si el nodo inicial no es la solución
+        if node.state == grid.end:
+            return Solution(node, explored={node.state: True})
+
+        # Creo la frontera y el historial de nodos explorados
+        frontier = StackFrontier() #LIFO
+        frontier.add(node)
+        explored = {}
         
-        # Add the node to the explored dictionary
-        explored[node.state] = True
-        
-        return NoSolution(explored)
+        while True:
+            # Si no quedan nodos por recorrer no hay solución
+            if frontier.is_empty():
+                return NoSolution(explored)
+            
+            current_node = frontier.remove() 
+            if current_node.state in explored: 
+                continue # Evita recorrer estados ya recorridos
+
+            explored[current_node.state] = True
+            neighbours = grid.get_neighbours(current_node.state)
+
+            for action, new_state in neighbours.items():
+                if new_state not in explored:
+                    new_node = Node(
+                        value=grid.get_node(new_state).value,
+                        state=new_state,
+                        parent=current_node,
+                        action=action,
+                        cost=current_node.cost + grid.get_cost(new_state)
+                    )
+
+                    # En caso de encontrar la solución
+                    if new_state == grid.end:
+                        return Solution(new_node, explored)
+
+                    frontier.add(new_node)
