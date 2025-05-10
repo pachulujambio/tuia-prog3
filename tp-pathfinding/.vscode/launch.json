@@ -1,0 +1,10 @@
+{
+  "name": "Debug TP -m pathfinder.main",
+  "type": "python",
+  "request": "launch",
+  "module": "pathfinder.main",
+  "justMyCode": false,
+  "env": {
+    "PYTHONPATH": "${workspaceFolder}/src"
+  }
+}

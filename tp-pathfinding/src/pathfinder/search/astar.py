@@ -3,7 +3,7 @@ from ..models.frontier import PriorityQueueFrontier
 from ..models.solution import NoSolution, Solution
 from ..models.node import Node
 
-# Algoritmo A* adaptado al proyecto actual (versión Python válida)
+# Algoritmo A* adaptado al proyecto actual
 """
 def graph_astar(grid: Grid, heuristic: Callable[[tuple[int, int]], float]) -> Solution | NoSolution:
     node = Node(state=grid.start, parent=None, action=None, cost=0)

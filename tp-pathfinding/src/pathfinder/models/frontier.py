@@ -45,7 +45,8 @@ class Frontier:
 
 class StackFrontier(Frontier):
     def remove(self) -> Node:
-        """Remove element from the stack
+        """LIFO
+        Remove element from the stack
 
         Raises:
             Exception: Empty Frontier
@@ -61,7 +62,8 @@ class StackFrontier(Frontier):
 
 class QueueFrontier(Frontier):
     def remove(self) -> Node:
-        """Remove element from the queue
+        """FIFO
+        Remove element from the queue 
 
         Raises:
             Exception: Empty Frontier

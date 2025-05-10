@@ -36,6 +36,9 @@ def graph_gbfs(grid: Grid, heuristic: Callable[[tuple[int, int]], float]) -> Sol
                 frontier.add(child_node, priority=heuristic(new_state))
 """
 
+def heuristic(state):
+    pass
+
 class GreedyBestFirstSearch:
     @staticmethod
     def search(grid: Grid) -> Solution:
