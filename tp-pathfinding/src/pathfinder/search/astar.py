@@ -2,6 +2,8 @@ from ..models.grid import Grid
 from ..models.frontier import PriorityQueueFrontier
 from ..models.solution import NoSolution, Solution
 from ..models.node import Node
+from .gbfs import manhattan
+from typing import Callable, Tuple
 
 # Algoritmo A* adaptado al proyecto actual
 """
@@ -39,9 +41,10 @@ def graph_astar(grid: Grid, heuristic: Callable[[tuple[int, int]], float]) -> So
                 frontier.add(child_node, priority=priority)
 """
 
+# Reutilice el código de GBFS en gran parte de la clase, salvo en el agregado a la frontera (en la prioridad)
 class AStarSearch:
     @staticmethod
-    def search(grid: Grid) -> Solution:
+    def search(grid: Grid) -> Solution | NoSolution:
         """Find path between two points in a grid using A* Search
 
         Args:
@@ -53,10 +56,36 @@ class AStarSearch:
         # Initialize a node with the initial position
         node = Node("", grid.start, 0)
 
-        # Initialize the explored dictionary to be empty
-        explored = {} 
+        # Verificamos que el cominzo no sea la solución
+        if grid.start == grid.end:
+            return Solution(node, explored={grid.start: 0})
         
-        # Add the node to the explored dictionary
-        explored[node.state] = True
-        
+        frontier = PriorityQueueFrontier()
+        frontier.add(node, priority=0 + manhattan(grid.start, grid.end))
+        explored: dict[Tuple[int,int], int] = {grid.start: 0}
+
+        # Buscamos siempre que haya una frontera
+        while not frontier.is_empty():
+            current_node = frontier.pop() # Retira por prioridad
+
+            # Verificar si el nodo es solución
+            if current_node.state == grid.end:
+                return Solution(current_node, explored)
+            
+            # Verificamos cada nodo vecino 
+            for action, nbr in grid.get_neighbours(current_node.state).items():
+                new_cost = current_node.cost + grid.get_cost(nbr) 
+
+                # En caso de ser un nuevo nodo o mejorar el costo se suma a la frontera para explorar posteriormente
+                if nbr not in explored or new_cost < explored[nbr]:
+                    new_node = Node(
+                        value=grid.get_node(nbr).value,
+                        state=nbr,
+                        cost=new_cost,
+                        parent=current_node,
+                        action=action
+                    )
+                    explored[nbr] = new_cost
+                    frontier.add(new_node, priority=new_cost + manhattan(nbr, grid.end))
+
         return NoSolution(explored)
