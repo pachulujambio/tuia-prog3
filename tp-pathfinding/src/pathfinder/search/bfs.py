@@ -45,10 +45,10 @@ class BreadthFirstSearch:
             current_node = frontier.remove() 
 
             # Buscamos los vecinos del primer nodo de la cola
-            neighbours = grid.get_neighbours(current_node.state)
+            successors = grid.get_neighbours(current_node.state)
 
             # Verificamos si un vecino del nodo es la solución
-            for action, new_state in neighbours.items():
+            for action, new_state in successors.items():
                 # Para evitar repetir una búsqueda verifica que no haya sido alcanzado previamente
                 if new_state not in explored:
                     new_node = Node(

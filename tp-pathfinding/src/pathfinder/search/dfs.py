@@ -57,10 +57,10 @@ class DepthFirstSearch:
                 continue # Evita recorrer estados ya recorridos
 
             explored[current_node.state] = True
-            neighbours = grid.get_neighbours(current_node.state)
+            successors = grid.get_neighbours(current_node.state)
 
-            for action, new_state in neighbours.items():
-                if new_state not in explored:
+            for action, new_state in successors.items():
+                if new_state not in explored: #Evita ciclos
                     new_node = Node(
                         value=grid.get_node(new_state).value,
                         state=new_state,
