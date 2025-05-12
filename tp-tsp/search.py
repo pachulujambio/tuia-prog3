@@ -125,7 +125,7 @@ class Tabu(LocalSearch):
         start = time()
         # Parametros por defecto hardcodeados
         tabu_tenure = 50
-        max_iters = 1000
+        max_iters = 15
 
         actual = problem.init
         mejor = actual
