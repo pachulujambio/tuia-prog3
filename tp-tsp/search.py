@@ -18,7 +18,7 @@ No viene implementado, se debe completar.
 from __future__ import annotations
 from time import time
 from problem import OptProblem
-
+from collections import deque
 
 class LocalSearch:
     """Clase que representa un algoritmo de busqueda local general."""
@@ -83,10 +83,6 @@ class HillClimbingReset(LocalSearch):
     """Algoritmo de ascension de colinas con reinicio aleatorio."""
 
     def solve(self, problem: OptProblem) -> None:
-        """
-        Ejecuta varias ascensiones de colina, reiniciando aleatoriamente
-        para escapar de óptimos locales, y selecciona la mejor solución.
-        """
         start = time()
         original_init = problem.init # Guardar estado inicial original
         best = None
@@ -125,4 +121,49 @@ class HillClimbingReset(LocalSearch):
 class Tabu(LocalSearch):
     """Algoritmo de busqueda tabu."""
 
-    # COMPLETAR
+    def solve(self, problem: OptProblem) -> None:
+        start = time()
+        # Parametros por defecto hardcodeados
+        tabu_tenure = 50
+        max_iters = 1000
+
+        actual = problem.init
+        mejor = actual
+        mejor_val = problem.obj_val(mejor)
+        tabu = deque(maxlen=tabu_tenure)
+
+        # Iterar hasta el máximo decladao
+        while self.niters < max_iters: 
+
+            mejor_accion = None
+            mejor_succ = None
+            mejor_succ_val = float('-inf') # infinito negativo como suelo inicial
+            for accion in problem.actions(actual):
+                # Si la accion ya es tabu no lo evalua
+                if accion in tabu:
+                    continue
+                succ = problem.result(actual, accion)
+                val = problem.obj_val(succ) # Valor del sucesor
+                
+                # acción y el estado del mejor vecino explorado, junto con su valoración
+                if val > mejor_succ_val:
+                    mejor_succ_val = val
+                    mejor_accion = accion
+                    mejor_succ = succ
+            
+            if mejor_accion is None: # si no hay acciones no tabu no sigue
+                break
+            if mejor_succ_val > mejor_val: # Si encontré una mejora se actualizan las globales
+                mejor = mejor_succ
+                mejor_val = mejor_succ_val
+            tabu.append(mejor_accion) # Evito que se revisite
+
+            # Ir al sucesor y sumar el contador
+            actual = mejor_succ
+            self.niters += 1
+
+        # Guardar mejor solución y estadísticas
+        self.tour = mejor
+        self.value = mejor_val
+        self.time = time() - start
+
