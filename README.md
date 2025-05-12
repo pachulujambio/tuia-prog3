@@ -13,4 +13,4 @@ Debido a que no puedo cursar regularmente porque también estoy recursando algeb
 Esta metodología me resultó efectiva salvo por el algoritmo tabú ya que no comprendí del todo la traducción directa que tenía que hacer y por esto recurri a material adicional [Wikipedia - Búsqueda tabú](https://es.wikipedia.org/wiki/B%C3%BAsqueda_tab%C3%BA), [geeksforgeeks](https://www.geeksforgeeks.org/what-is-tabu-search/) y Chatgpt.
 
 ### Link Repositorio
-
+[TUIA Programacion 3 - Valentín Lujambio](https://github.com/pachulujambio/tuia-prog3)
